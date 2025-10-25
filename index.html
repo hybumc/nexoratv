@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXORA TV Giriş</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NEXORA TV">
+    <meta property="og:description" content="NEXORA TV Key Girişi">
+    <style>
+        /* Genel Stil */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: "Poppins", sans-serif;
+            overflow: hidden; /* Animasyon sırasında kaydırmayı engellemek için */
+        }
+
+        /* Yükleyici (Loader) Stili */
+        #loader-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            background: #1a1a1a;
+            transition: opacity 0.5s ease-out; /* Geçiş için */
+        }
+
+        .loader-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            font-size: 1.6em;
+            font-weight: 600;
+            user-select: none;
+            scale: 2;
+        }
+
+        .loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1;
+            background-color: transparent;
+            mask: repeating-linear-gradient(
+                90deg,
+                transparent 0,
+                transparent 6px,
+                black 7px,
+                black 8px
+            );
+        }
+
+        .loader::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Neon efekti için renkler güncellendi, mavi ve turuncu tonlar */
+            background-image: radial-gradient(circle at 50% 50%, #00f 0%, transparent 50%),
+                radial-gradient(circle at 45% 45%, #f50 0%, transparent 45%),
+                radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%),
+                radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%),
+                radial-gradient(circle at 55% 45%, #f0f 0%, transparent 45%);
+            mask: radial-gradient(circle at 50% 50%, transparent 0%, transparent 10%, black 25%);
+            animation: transform-animation 2s infinite alternate, opacity-animation 4s infinite;
+            animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+        }
+
+        @keyframes transform-animation {
+            0% { transform: translate(-55%); }
+            100% { transform: translate(55%); }
+        }
+
+        @keyframes opacity-animation {
+            0%, 100% { opacity: 0; }
+            15% { opacity: 1; }
+            65% { opacity: 0; }
+        }
+
+        .loader-letter {
+            display: inline-block;
+            opacity: 0;
+            animation: loader-letter-anim 5s linear forwards;
+            z-index: 2;
+        }
+
+        /* NEXORA TV'deki her harf için animasyon gecikmeleri */
+        .loader-letter:nth-child(1) { animation-delay: 0.1s; } /* N */
+        .loader-letter:nth-child(2) { animation-delay: 0.2s; } /* E */
+        .loader-letter:nth-child(3) { animation-delay: 0.3s; } /* X */
+        .loader-letter:nth-child(4) { animation-delay: 0.4s; } /* O */
+        .loader-letter:nth-child(5) { animation-delay: 0.5s; } /* R */
+        .loader-letter:nth-child(6) { animation-delay: 0.6s; } /* A */
+        .loader-letter:nth-child(7) { animation-delay: 0.8s; } /* (Boşluk yok, direkt T) */
+        .loader-letter:nth-child(8) { animation-delay: 0.9s; } /* T */
+        .loader-letter:nth-child(9) { animation-delay: 1.0s; } /* V */
+
+        @keyframes loader-letter-anim {
+            0% { opacity: 0; }
+            5% { opacity: 1; text-shadow: 0 0 4px #fff; transform: scale(1.1) translateY(-2px); }
+            20% { opacity: 0.2; }
+            100% { opacity: 0; }
+        }
+
+        /* Key Giriş Ekranı Stili */
+        #key-input-screen {
+            display: none; /* Başlangıçta gizli */
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #282828;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        #key-input-screen h2 {
+            margin-bottom: 20px;
+            color: #00bcd4; /* Mavi tonu */
+        }
+
+        #key-input-screen input[type="password"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background: #1a1a1a;
+            color: #fff;
+            width: 80%;
+            text-align: center;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+
+        #key-input-screen input[type="password"]:focus {
+            border-color: #00bcd4;
+            outline: none;
+        }
+
+        #key-input-screen button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #00bcd4;
+            color: #1a1a1a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        #key-input-screen button:hover {
+            background: #0097a7;
+        }
+
+        #key-input-screen button:active {
+            transform: scale(0.98);
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ff0; /* Sarı */
+            display: none; /* Başlangıçta gizli */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader-screen">
+        <div class="loader-wrapper">
+            <span class="loader-letter">N</span>
+            <span class="loader-letter">E</span>
+            <span class="loader-letter">X</span>
+            <span class="loader-letter">O</span>
+            <span class="loader-letter">R</span>
+            <span class="loader-letter">A</span>
+            <span class="loader-letter"> </span> <span class="loader-letter">T</span>
+            <span class="loader-letter">V</span>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <div id="key-input-screen">
+        <h2>Key Girişi</h2>
+        <input type="password" id="key-input" placeholder="Anahtarınızı Girin">
+        <button onclick="checkKey()">Giriş Yap</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const CORRECT_KEY = "nexoratv9911"; // Belirlenen doğru key
+        const loaderScreen = document.getElementById('loader-screen');
+        const keyInputScreen = document.getElementById('key-input-screen');
+        const messageElement = document.getElementById('message');
+
+        // 5 saniye sonra key giriş ekranını göster
+        setTimeout(() => {
+            // Yükleme ekranını gizle (fade-out efekti ile)
+            loaderScreen.style.opacity = '0';
+            
+            // Animasyon geçtikten sonra display: none yap ve key giriş ekranını göster
+            setTimeout(() => {
+                loaderScreen.style.display = 'none';
+                keyInputScreen.style.display = 'flex';
+            }, 500); // CSS'deki opacity geçiş süresi (0.5s) kadar bekler
+        }, 5000); // 5 saniye (5000 milisaniye)
+
+        function checkKey() {
+            const enteredKey = document.getElementById('key-input').value;
+
+            if (enteredKey === CORRECT_KEY) {
+                // Doğru Key
+                messageElement.textContent = "Bakımda Filimler";
+                messageElement.style.color = '#0f0'; // Yeşil
+                messageElement.style.display = 'block';
+                document.getElementById('key-input').style.display = 'none';
+                document.querySelector('#key-input-screen button').style.display = 'none';
+            } else {
+                // Yanlış Key
+                messageElement.textContent = "Yanlış Key!";
+                messageElement.style.color = '#f00'; // Kırmızı
+                messageElement.style.display = 'block';
+                document.getElementById('key-input').value = ''; // Girişi temizle
+                
+                // Kısa bir süre sonra mesajı gizle
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 2000);
+            }
+        }
+    </script>
+
+</body>
+</html>
